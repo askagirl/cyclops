@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Cyclops by aol</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Cyclops</h1>
+          <h2>Modular extensions for Java 8 awesomeness</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/aol/cyclops/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/aol/cyclops/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/aol/cyclops" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="cyclops" class="anchor" href="#cyclops" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cyclops</h1>
+
+<p>Powerful, modular extensions for Java 8. Take what you need / want.</p>
+
+<ul>
+<li><a href="https://github.com/aol/cyclops/wiki/Extensible-For-Comprehensions-for-Java-8">Extensible For Comprehensions</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Pattern-matching-:-Pattern-Matching-for-Java-8">Pattern Matching</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Monad-&amp;-Stream-utilities">Advanced Monadic (Stream, Optional etc) cross-type operations</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Power-Tuples">Powerful Tuple implementation</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Trampoline-:-Stackless-Recursion-for-Java-8">Trampoline</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Try-:-functional-exception-handling-for-Java-8">Try</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Enable-and-disable-production-features">Enable Switch</a></li>
+<li><a href="https://github.com/aol/cyclops/wiki/Utilities-for-working-with-Java-8-Functions">Utils for working with Functions</a></li>
+</ul>
+
+<p><a href="https://github.com/aol/cyclops/wiki">Cyclops Wiki</a></p>
+
+<h2>
+<a id="for-comprehensions" class="anchor" href="#for-comprehensions" aria-hidden="true"><span class="octicon octicon-link"></span></a>For Comprehensions</h2>
+
+<p>Perform nested operations on Collections or Monads.</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/9964792/7887680/c6ac127c-062a-11e5-9ad7-ad4553761e8d.png" alt="for comprehensions"></p>
+
+<h3>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h3>
+
+<pre><code>Stream&lt;Double&gt; s = Do.with(asList(10.00,5.00,100.30))
+                    .with(asList(2.0))
+                    .and((Double d)-&gt;(Double e)-&gt;asList(e*d*10.0))
+                    .yield((Double i)-&gt;(Double j)-&gt;(Double k) -&gt; i*(1.0+j)*k);
+
+double total = s.collect(Collectors.summingDouble(t-&gt;t));
+</code></pre>
+
+<h2>
+<a id="pattern-matching" class="anchor" href="#pattern-matching" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pattern Matching</h2>
+
+<p>Advanced Scala-like pattern matching for Java 8. Match recursively against most Objects / datastructures.</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/9964792/7887716/01eeeeb8-062b-11e5-95e9-3ac10f16acdf.png" alt="whenvalues recursive"></p>
+
+<p>Features include</p>
+
+<ul>
+<li>Sequential, Parallel and Async execution</li>
+<li>Match by type, value, predicate or Hamcrest Matcher</li>
+<li>Recursively decompose and match against Case classes</li>
+<li>Fluent step builders for common cases</li>
+<li>Fluent, functionally compositional monad-like core Case and Cases classes</li>
+<li>Support for chain of responsibility pattern within a Stream</li>
+<li>Support hamcrest matchers</li>
+<li>Java 8 predicates for matching.</li>
+<li>Match on first (return Optional)</li>
+<li>Match many (return Stream)</li>
+<li>Strict and lose typing</li>
+<li>Pre &amp; post value extraction per case</li>
+<li>Match using multiple in case expressions via tuples or iterables of predicates / matchers</li>
+<li>Match against streams of data</li>
+<li>Usable within a Stream (strategy pattern)</li>
+<li>Fluent step builders</li>
+</ul>
+
+<h3>
+<a id="example-1" class="anchor" href="#example-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h3>
+
+<pre><code>private &lt;I,T&gt; CheckValues&lt;Object, T&gt; cases(CheckValues&lt;I, T&gt; c) {
+    return c.with(1,2,3).then(i-&gt;"hello")
+            .with(4,5,6).then(i-&gt;"goodbye");
+}
+@Test
+public void test(){
+    assertThat(As.asMatchable(new MyCase(1,2,3)).match(this::cases),equalTo("hello"));
+
+}
+</code></pre>
+
+<h2>
+<a id="extensible-generic-monad-operations" class="anchor" href="#extensible-generic-monad-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extensible Generic Monad Operations</h2>
+
+<h3>
+<a id="example-2" class="anchor" href="#example-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h3>
+
+<p>flatMap (bind) across Stream and Optional types (null entries are removed)</p>
+
+<pre><code>  List&lt;Integer&gt; list = As.&lt;Stream&lt;Integer&gt;,List&lt;Integer&gt;&gt;asMonad(Stream.of(Arrays.asList(1,3),null))
+            .bind(Optional::ofNullable)
+            .map(i-&gt;i.size())
+            .peek(System.out::println)
+            .toList();
+    assertThat(Arrays.asList(2),equalTo(list));
+</code></pre>
+
+<h3>
+<a id="example-3" class="anchor" href="#example-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h3>
+
+<p>Lift a File to a Stream</p>
+
+<pre><code>    List&lt;String&gt; result = AsGenericMonad.&lt;Stream&lt;String&gt;,String&gt;asMonad(Stream.of("input.file"))
+                            .map(getClass().getClassLoader()::getResource)
+                            .peek(System.out::println)
+                            .map(URL::getFile)
+                            .&lt;Stream&lt;String&gt;,String&gt;liftAndbind(File::new)
+                            .toList();
+
+    assertThat(result,equalTo(Arrays.asList("hello","world")));
+</code></pre>
+
+<h2>
+<a id="power-tuples" class="anchor" href="#power-tuples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Power Tuples</h2>
+
+<p>Features include</p>
+
+<ul>
+<li>Wrap any Tuple type / Object (mapping fields to elements and back)</li>
+<li>Method call chaining support</li>
+<li>Asyncrhonous method call chaining support</li>
+<li>Inheritance relationship between Tuples</li>
+<li>Lazy and Strict map methods</li>
+<li>Lazy reordering</li>
+<li>Pattern matching</li>
+<li>For comprehensions</li>
+<li>Useful utility methods (asStreamOfStrings, asTwoNumbers etc)</li>
+<li>Concatonation</li>
+<li>LazySwap (reverse)
+vMemoization</li>
+<li>asCollector</li>
+<li>asReducer</li>
+</ul>
+
+<p><a href="https://github.com/aol/cyclops/wiki/Power-Tuples">See Power Tuples wiki</a></p>
+
+<h2>
+<a id="stackless-recursion-with-trampoline" class="anchor" href="#stackless-recursion-with-trampoline" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stackless Recursion with Trampoline</h2>
+
+<p>Utilise the heap rather than the Stack for (tail) recursive algorithms in Java.</p>
+
+<p>The Java code below will result in a Stackoverflow error  </p>
+
+<pre><code>@Test @Ignore
+public void trampolineTest1(){
+
+    assertThat(loop1(500000,10),equalTo(446198426));
+
+}
+Integer loop1(int times,int sum){
+
+    if(times==0)
+        return sum;
+    else
+        return loop1(times-1,sum+times);
+}  
+</code></pre>
+
+<p>The same code using Trampoline works fine.</p>
+
+<pre><code>@Test
+public void trampolineTest(){
+
+    assertThat(loop(500000,10).result(),equalTo(446198426));
+
+ }
+
+ Trampoline&lt;Integer&gt; loop(int times,int sum){
+
+   if(times==0)
+      return Trampoline.done(sum);
+   else
+      return Trampoline.more(()-&gt;loop(times-1,sum+times));
+ }
+</code></pre>
+
+<h2>
+<a id="try--functional-exception-handling" class="anchor" href="#try--functional-exception-handling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Try : functional exception handling</h2>
+
+<p>Cyclops Try is similar to, but functionally different from the Scala (and JAVASLANG) Try monads. </p>
+
+<p>Features </p>
+
+<ul>
+<li>Try with Resources</li>
+<li>Success and Failure states</li>
+<li>Step builders to guide you through use</li>
+<li>Catch specified (expected) exceptions</li>
+<li>Doesn't operate as a 'catch-all' that may hide bugs</li>
+<li>Recover from different exceptions independently</li>
+<li>Functional composition over both success and failed states</li>
+</ul>
+
+<h3>
+<a id="example--try-with-resources" class="anchor" href="#example--try-with-resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example : Try with resources</h3>
+
+<pre><code>Try.catchExceptions(FileNotFoundException.class,IOException.class)
+               .init(()-&gt;new BufferedReader(new FileReader("file.txt")))
+               .tryWithResources(this::read)
+               .onFail(this::recover)
+               .map(this::continueProcessing)
+</code></pre>
+
+<h2>
+<a id="production-enable--disable-switch" class="anchor" href="#production-enable--disable-switch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Production Enable / Disable Switch</h2>
+
+<ul>
+<li>Enable / Disable classes (Pattern Match by type)</li>
+<li>convert to Optional or Stream</li>
+<li>standard Java 8 operators (map, flatMap, peek, filter, forEach) + flatten etc</li>
+<li>isEnabled / isDisabled</li>
+<li>Biased towards enabled (right biased).</li>
+</ul>
+
+<h3>
+<a id="example-4" class="anchor" href="#example-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h3>
+
+<pre><code>Switch&lt;Feature&gt; switch = createSwitch(config);
+
+switch.map(this::processData); //if live, data is processed, otherwise nothing happens
+</code></pre>
+
+<h2>
+<a id="traits" class="anchor" href="#traits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Traits</h2>
+
+<ul>
+<li>Decomposable : decompose an Object to a Iterable over it's values</li>
+<li>Matchable : add pattern matching capabilities to an Object</li>
+<li>Doable : add for comprehension capabilities to an Object</li>
+<li>Streamable : add repeatable Streaming capabilities</li>
+<li>Mappable : add the ability to coerce an Object to a map</li>
+<li>Printable : ability to println as an expression</li>
+<li>ValueObject : Matchable and Decomposable object</li>
+<li>StreamableValue : Streamable and Doable ValueObject</li>
+</ul>
+
+<p>com.aol.cyclops.dynamic.As offers duck typing / coercion to many different types (including the above traits) and</p>
+
+<ul>
+<li>com.aol.cyclops.lambda.monads.Monad</li>
+<li>com.aol.cyclops.lambda.monads.Functor</li>
+<li>com.aol.cyclops.lambda.monads.Monoid</li>
+<li>Supplier</li>
+</ul>
+
+<h2>
+<a id="function-utilities" class="anchor" href="#function-utilities" aria-hidden="true"><span class="octicon octicon-link"></span></a>Function utilities</h2>
+
+<ul>
+<li>Currying : com.aol.cyclops.functions.Curry</li>
+<li>Currying for Consumers : com.aol.cyclops.functions.CurryConsumer</li>
+<li>Uncurrying : com.aol.cyclops.functions.Uncurry</li>
+<li>Uncurrying for Consumers : com.aol.cyclops.functions.UncurryConsumer</li>
+<li>Type Inferencing help : com.aol.cyclops.lambda.utils.Lambda</li>
+<li>Memoisation : com.aol.cyclops.functions.Memoise</li>
+</ul>
+
+<h2>
+<a id="cyclops-base" class="anchor" href="#cyclops-base" aria-hidden="true"><span class="octicon octicon-link"></span></a>cyclops-base</h2>
+
+<h3>
+<a id="lazyimmutable" class="anchor" href="#lazyimmutable" aria-hidden="true"><span class="octicon octicon-link"></span></a>LazyImmutable</h3>
+
+<p>This is a class that helps work around the limitations of Java 8 lambda expressions as closures. In particular the workings of 'effectively final'.</p>
+
+<p>LazyImmutable allows a capture value to be set exactly once</p>
+
+<p>E.g. from cyclops-pattern-matching the code to make an Extractor memoised -&gt;</p>
+
+<pre><code>public static final &lt;T,R &gt; Extractor&lt;T,R&gt; memoised( Extractor&lt;T,R&gt; extractor){
+    final LazyImmutable&lt;R&gt; value = new LazyImmutable&lt;&gt;();
+    return input -&gt; {
+        return value.computeIfAbsent(()-&gt;extractor.apply(input));
+
+    };
+
+}
+</code></pre>
+
+<p>computeIfAbsent is used to extract the value from the LazyImmutable, and takes a Supplier as an argument. The Supplier is only invoked once (the first time).</p>
+
+<h3>
+<a id="mutable" class="anchor" href="#mutable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mutable</h3>
+
+<p>Mutable represents a captured variable inside a Java 8 closure. Because of the effectively final rule we can't access variables from within a Closure, but we can mutate the state of captured Objects. Mutable holds a value we would like mutate (if really, really, neccessary)</p>
+
+<pre><code> Mutable&lt;Integer&gt; timesCalled = Mutable.of(0);
+ Function&lt;String,String&gt; fn = input -&gt; {
+            return input + timesCalled.mutate(v -&gt; v+1);
+ }
+</code></pre>
+        </section>
+
+        <footer>
+          Cyclops is maintained by <a href="https://github.com/aol">aol</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
