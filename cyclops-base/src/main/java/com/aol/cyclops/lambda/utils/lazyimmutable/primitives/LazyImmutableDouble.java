@@ -1,17 +1,17 @@
-package com.aol.cyclops.lambda.utils;
+package com.aol.cyclops.lambda.utils.lazyimmutable.primitives;
 
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.IntSupplier;
-import java.util.function.IntUnaryOperator;
-import java.util.function.Supplier;
+import java.util.function.DoubleFunction;
+import java.util.function.DoubleSupplier;
+import java.util.function.DoubleUnaryOperator;
+
+import com.aol.cyclops.lambda.utils.LazyImmutableSetMoreThanOnceException;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
-public class LazyImmutableInt {
+public class LazyImmutableDouble {
 	/**
 	 * A class that represents an 'immutable' value that is generated inside a
 	 * lambda expression, but is accessible outside it
@@ -24,9 +24,9 @@ public class LazyImmutableInt {
 	 * <pre>
 	 * {@code
 	 * public static <T> Supplier<T> memoiseSupplier(Supplier<T> s){
-			LazyImmutable<T> lazy = LazyImmutable.def();
-			return () -> lazy.computeIfAbsent(s);
-		}
+	 * 			LazyImmutable<T> lazy = LazyImmutable.def();
+	 * 			return () -> lazy.computeIfAbsent(s);
+	 * 		}
 	 * }
 	 * </pre>
 	 * 
@@ -37,16 +37,16 @@ public class LazyImmutableInt {
 	 *
 	 * @param <T>
 	 */
-	private int value;
+	private double value;
 	private boolean set = false;
 
-	public LazyImmutableInt() {
+	public LazyImmutableDouble() {
 	}
 
 	/**
 	 * @return Current value
 	 */
-	public int get() {
+	public double get() {
 		return value;
 	}
 
@@ -65,8 +65,8 @@ public class LazyImmutableInt {
 	 *            value
 	 * @return Initialised ImmutableClosedValue
 	 */
-	public static LazyImmutableInt of(int value) {
-		LazyImmutableInt v = new LazyImmutableInt();
+	public static LazyImmutableDouble of(double value) {
+		LazyImmutableDouble v = new LazyImmutableDouble();
 		v.setOnce(value);
 		return v;
 	}
@@ -74,8 +74,8 @@ public class LazyImmutableInt {
 	/**
 	 * @return a defined, but unitialised LazyImmutable
 	 */
-	public static LazyImmutableInt def() {
-		return new LazyImmutableInt();
+	public static LazyImmutableDouble def() {
+		return new LazyImmutableDouble();
 	}
 
 	/**
@@ -87,11 +87,11 @@ public class LazyImmutableInt {
 	 *            Mapper function
 	 * @return new ImmutableClosedValue with new mapped value
 	 */
-	public LazyImmutableInt map(IntUnaryOperator fn) {
+	public LazyImmutableDouble map(DoubleUnaryOperator fn) {
 		if (!set)
-			return (LazyImmutableInt) this;
+			return (LazyImmutableDouble) this;
 		else
-			return LazyImmutableInt.of(fn.applyAsInt(value));
+			return LazyImmutableDouble.of(fn.applyAsDouble(value));
 	}
 
 	/**
@@ -103,9 +103,9 @@ public class LazyImmutableInt {
 	 *            Flat Mapper function
 	 * @return new ImmutableClosedValue with new mapped value
 	 */
-	public LazyImmutableInt flatMap(IntFunction<LazyImmutableInt> fn) {
+	public LazyImmutableDouble flatMap(DoubleFunction<LazyImmutableDouble> fn) {
 		if (!set)
-			return (LazyImmutableInt) this;
+			return (LazyImmutableDouble) this;
 		else
 			return fn.apply(value);
 	}
@@ -119,19 +119,21 @@ public class LazyImmutableInt {
 	 *            Value to set to
 	 * @return Current set Value
 	 */
-	public synchronized LazyImmutableInt setOnce(int val) throws LazyImmutableSetMoreThanOnceException {
+	public synchronized LazyImmutableDouble setOnce(double val)
+			throws LazyImmutableSetMoreThanOnceException {
 		if (!this.set) {
 			this.value = val;
 			this.set = true;
 			return this;
 		}
-		throw new LazyImmutableSetMoreThanOnceException("Current value " + this.value + " attempt to reset to " + val);
+		throw new LazyImmutableSetMoreThanOnceException("Current value "
+				+ this.value + " attempt to reset to " + val);
 	}
 
-	private synchronized int setOnceFromSupplier(IntSupplier lazy) {
+	private synchronized double setOnceFromSupplier(DoubleSupplier lazy) {
 
 		if (!this.set) {
-			this.value = lazy.getAsInt();
+			this.value = lazy.getAsDouble();
 			this.set = true;
 			return this.value;
 		}
@@ -147,7 +149,7 @@ public class LazyImmutableInt {
 	 *            Supplier to generate new value
 	 * @return Current value
 	 */
-	public int computeIfAbsent(IntSupplier lazy) {
+	public double computeIfAbsent(DoubleSupplier lazy) {
 		if (set)
 			return value;
 		return setOnceFromSupplier(lazy);
