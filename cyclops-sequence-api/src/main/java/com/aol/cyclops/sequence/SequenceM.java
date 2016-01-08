@@ -2617,8 +2617,8 @@ public interface SequenceM<T> extends Unwrapable, Stream<T>, Seq<T>,Iterable<T>,
 				
 				sleep[0]=sleep[0]*2;
 			}
-			ExceptionSoftener.throwSoftenedException(exception);
-			return null;
+			throw ExceptionSoftener.throwSoftenedException(exception);
+			
 		};
 		return map(retry);
 	}

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,6 +20,14 @@ import com.aol.cyclops.sequence.SequenceM;
 
 public class ForComprehensionsTest {
 
+	@Test
+	public void forEach2Optional(){
+		
+	assertThat(AnyM.fromArray(1,null,2,null,3)
+		         .forEach2(a->AnyM.<Integer>fromOptional(Optional.ofNullable(a)), 
+		        		 a->b-> a+b)
+		         .toList(),equalTo(Arrays.asList(1, 2, 3)));
+	}
 	@Test
 	public void forEach2(){
 		
