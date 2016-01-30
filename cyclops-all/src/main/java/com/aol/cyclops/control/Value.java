@@ -16,6 +16,7 @@ import com.aol.cyclops.collections.extensions.standard.QueueX;
 import com.aol.cyclops.collections.extensions.standard.SetX;
 import com.aol.cyclops.collections.extensions.standard.SortedSetX;
 import com.aol.cyclops.sequence.Monoid;
+import com.aol.cyclops.trycatch.Try;
 import com.aol.cyclops.value.ValueObject;
 
 public interface Value<T> extends Supplier<T>, ValueObject, Convertable<T> {
@@ -32,6 +33,10 @@ public interface Value<T> extends Supplier<T>, ValueObject, Convertable<T> {
 	 
 	 default T fold(Monoid<T> monoid){
 		 return monoid.reduce(toStream());
+	 }
+	 
+	 default  Try<T,Throwable> toTry(){
+		 return Try.withCatch(()->get(), Throwable.class);
 	 }
 	 
 	 default ListX<T> toListX(){
