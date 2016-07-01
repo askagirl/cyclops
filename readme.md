@@ -6,8 +6,11 @@ There are a number of integration modules for cyclops-react, they are
 
 * [cyclops-rx](https://github.com/aol/cyclops/tree/master/cyclops-rx)
 * [cyclops-reactor](https://github.com/aol/cyclops/tree/master/cyclops-reactor)
+* [cyclops-guava](https://github.com/aol/cyclops/tree/master/cyclops-guava)
 * [cyclops-functionaljava](https://github.com/aol/cyclops/tree/master/cyclops-functionaljava)
 * [cyclops-javaslang](https://github.com/aol/cyclops/tree/master/cyclops-javaslang)
+
+This screencast gives an overview of how cyclops can help integrate and provide abstractions across the datatypes in the above libraries. [Unifying the cambrian explosion with cyclops-react ] (https://www.youtube.com/watch?v=YgzvpMbxiRo)
 
 ## Integration module features
 

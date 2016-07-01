@@ -30,11 +30,11 @@ Observable<Integer> result = RxCyclops.ForObservable.each2(Obserbable.just(10,20
  ```
 
  
- ## FluxT monad transformer
+ ## observableT monad transformer
  
 ```java
 StreamTSeq<Integer> nested = RxCyclops.observableT(ReactiveSeq.of(Observable.just(1,2,3),Observable.just(10,20,30)));
 StreamTSeq<Integer> mapped = nested.map(i->i*3);
 
-//mapped = [Observable[ReactiveSeq[3,6,9],ReactiveSeq[30,60,90]]
+//mapped = [ReactiveSeq[ReactiveSeq[3,6,9],ReactiveSeq[30,60,90]]
 ```
